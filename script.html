@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Script chi tiết | TakiVN Scripts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+    .script-detail { max-width: 600px; margin: 2em auto; background: #23272a; border-radius: 1em; padding: 2em 1.2em; box-shadow: 0 2px 16px #0008; color: #eee; }
+    .script-detail h1 { font-size: 1.4em; margin-top: 0; margin-bottom: 0.5em; text-align: center; color: #61dafb; }
+    .script-detail-img { width: 100%; max-width: 350px; margin: 1.2em auto 1em auto; display: block; border-radius: 0.7em; box-shadow: 0 2px 12px #0004; }
+    .script-detail-desc { font-size: 1.1em; text-align: center; margin-bottom: 1.4em; color: #bbb; }
+    .script-detail-code { background: #181a1b; border-radius: 0.7em; padding: 1em 1em 0.6em 1em; margin-bottom: 1.2em; font-family: 'Fira Mono', 'Consolas', monospace; font-size: 1.08em; color: #ffc97d; word-break: break-all; position: relative; overflow-x: auto; }
+    .copy-btn { display: inline-block; background: linear-gradient(90deg, #006aff 60%, #61dafb 100%); color: #fff; border: none; border-radius: 1em; padding: 0.6em 2em; font-size: 1em; font-weight: 600; cursor: pointer; margin-top: 0.9em; margin-bottom: 1.5em; transition: background 0.18s, transform 0.14s; box-shadow: 0 2px 8px #005dff33; }
+    .copy-btn:active { background: #232f34; }
+    .back-btn { display: block; margin: 1.6em auto 0 auto; background: none; color: #61dafb; border: none; font-size: 1.1em; cursor: pointer; text-decoration: underline; }
+    </style>
+    <script src="scripts-data.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <img src="assets/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+            <h1>TakiVN Scripts</h1>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
+    <main>
+        <div class="script-detail" id="scriptDetail">
+            <!-- Nội dung sẽ được JS render vào đây -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 TakiVN Roblox Scripts. Đéo hợp tác với Roblox.</p>
+    </footer>
+    <script>
+    // Lấy id script từ URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const data = window.scripts && window.scripts[id];
+    function renderDetail() {
+        if (!data) {
+            document.getElementById('scriptDetail').innerHTML = '<div style="color:#f66;text-align:center;font-size:1.2em">Không tìm thấy script!</div>';
+            return;
+        }
+        document.title = data.title + " | TakiVN Scripts";
+        document.getElementById('scriptDetail').innerHTML = `
+            <h1>${data.title}</h1>
+            <img src="${data.image}" alt="${data.title}" class="script-detail-img" />
+            <div class="script-detail-desc">${data.desc}</div>
+            <pre class="script-detail-code" id="codeArea">${data.code}</pre>
+            <button class="copy-btn" onclick="copyScript()">Copy</button>
+            <button class="back-btn" onclick="window.location.href='index.html'">← Quay lại</button>
+        `;
+    }
+    function copyScript() {
+        const code = document.getElementById('codeArea').innerText;
+        navigator.clipboard.writeText(code).then(function() {
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = 'Đã copy!';
+            setTimeout(()=>{btn.innerText='Copy'},1500);
+        });
+    }
+    renderDetail();
+    </script>
+</body>
+</html>
